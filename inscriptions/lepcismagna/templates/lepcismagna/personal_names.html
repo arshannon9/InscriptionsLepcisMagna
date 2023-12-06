@@ -1,0 +1,37 @@
+{% extends "lepcismagna/layout.html" %} {% block body %}
+
+<div class="index-header">
+  <h2>Personal Names</h2>
+</div>
+
+<table class="table table-striped table-hover table-bordered">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">References</th>
+    </tr>
+  </thead>
+  <tbody class="table-light">
+    {% for personal_name in personal_names %}
+    <tr>
+      <th scope="row">{{ personal_name.name }}</th>
+      <td>
+        <ul>
+          {% for inscription_reference in
+          personal_name.inscription_references.all %}
+          <li class="inscription-list-item">
+            <a
+              href="{% url 'inscription_detail' inscription_reference.reference_id|default:'No reference ID' %}"
+            >
+              {{ inscription_reference.reference_id }}.{{
+              inscription_reference.line_number_reference }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+{% endblock %}

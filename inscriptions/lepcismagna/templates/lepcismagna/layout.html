@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0 shrink-to-fit=no"
+    />
+    <meta name="description" content="Inscriptions of Lepcis Magna" />
+    <meta name="author" content="Anthony Ryan Shannon" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+
+    <!-- Import EB Garamond font via Google APIs-->
+    <link
+      href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Custom styles -->
+    {% load static %}
+    <link href="{% static 'lepcismagna/styles.css' %}" rel="stylesheet" />
+
+    <title>Inscriptions of Lepcis Magna</title>
+  </head>
+
+  <body class="bg-dark">
+    <!-- navbar -->
+    <nav class="navbar sticky-top bg-dark navbar-expand-md navbar-dark">
+      <div class="navbar-container container-xxl">
+        <a class="navbar-brand" href="{% url 'index' %}">
+          <span class="fw-bold text-secondary">
+            <i class="bi bi-bank"></i>
+          </span>
+          <span class="text-danger">INSCRIPTIONS OF LEPCIS MAGNA</span>
+        </a>
+
+        <!-- toggle button for mobile nav -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#main-nav"
+          aria-controls="main-nav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="collapse navbar-collapse justify-content-start align-center"
+          id="main-nav"
+        >
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'inscriptions' %}">
+                Inscriptions
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'categories' %}"> Categories </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'bibliography' %}">
+                Bibliography
+              </a>
+            </li>
+
+            <li class="nav-item dropdown">
+              <div class="btn-group">
+                <button class="btn btn-danger">Indices</button>
+                <button
+                  class="btn btn-danger dropdown-toggle dropdown-toggle-split"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <span class="visually-hidden">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-dark">
+                  <li>
+                    <a class="dropdown-item" href="{% url 'abbreviations' %}"
+                      >Abbreviations</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'ages_at_death' %}"
+                      >Age at Death</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="{% url 'divine_sacred_beings' %}"
+                      >Divine and Sacred Beings</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="{% url 'emperors_imperial_family' %}"
+                      >Emperors and Imperial Family</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'erasures' %}"
+                      >Erasures</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'findspots' %}"
+                      >Findspots</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'fragments' %}"
+                      >Fragments</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'organizations' %}"
+                      >Organizations</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'people' %}"
+                      >People</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'personal_names' %}"
+                      >Personal Names</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'place_names' %}"
+                      >Place Names</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'symbols' %}"
+                      >Symbols</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'words' %}">Words</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'create_entry' %}">
+                Create New Entry
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'dossier' %}">
+                Epigraphic Dossier
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}"> Logout </a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}"> Login </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'register' %}"> Register </a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main class="main-container container-md mt-5 bg-light">
+      {% block body %} {% endblock %}
+    </main>
+
+    <footer class="container-md mt-5">
+      <p>Copyright &#169; 2023 Anthony Ryan Shannon - All Rights Reserved</p>
+    </footer>
+
+    <!-- Bootstrap JavaScript -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

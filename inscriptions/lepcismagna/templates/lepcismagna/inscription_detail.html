@@ -1,0 +1,125 @@
+{% extends "lepcismagna/layout.html" %} {% block body %}
+
+<div class="inscription-header">
+  <h1>{{ inscription.reference_id }} - {{ inscription.title }}</h1>
+  {% if user.is_authenticated %}
+  <form
+    method="POST"
+    action="{% url 'toggle_dossier' reference_id=inscription.reference_id %}"
+  >
+    {% csrf_token %} {% if inscription in user.dossier.all %}
+    <input
+      class="btn btn-secondary"
+      type="submit"
+      value="Remove from Dossier"
+    />
+    {% else %}
+    <input class="btn btn-danger" type="submit" value="Add to Dossier" />
+    {% endif %}
+  </form>
+  {% endif %}
+</div>
+
+<div class="inscr-div inscription-info">
+  <p><strong>Description: </strong>{{ inscription.description }}</p>
+  <p><strong>Text: </strong>{{ inscription.text }}</p>
+  <p><strong>Letters: </strong>{{ inscription.letters }}</p>
+  <p><strong>Date: </strong>{{ inscription.date }}</p>
+</div>
+
+<div class="inscr-div inscription-locations">
+  <p><strong>Findspot: </strong>{{ inscription.findspot_desc }}</p>
+  <p><strong>Original location: </strong>{{ inscription.original_location }}</p>
+  <p>
+    <strong>Last recorded location: </strong>
+    {{ inscription.last_recorded_location }}
+  </p>
+</div>
+
+<div class="inscr-div inscription-transcriptions">
+  <ul class="nav nav-tabs" id="transcriptions" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link active"
+        id="interpretive-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#interpretive"
+        type="button"
+        role="tab"
+        aria-controls="interpretive"
+        aria-selected="true"
+      >
+        Interpretive
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="diplomatic-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#diplomatic"
+        type="button"
+        role="tab"
+        aria-controls="diplomatic"
+        aria-selected="false"
+      >
+        Diplomatic
+      </button>
+    </li>
+  </ul>
+  <div class="tab-content" id="transcriptions-content">
+    <div
+      class="tab-pane fade show active"
+      id="interpretive"
+      role="tabpanel"
+      aria-labelledby="interpretive-tab"
+    >
+      {{ inscription.transcription_interpretive|safe }}
+    </div>
+    <div
+      class="tab-pane fade"
+      id="diplomatic"
+      role="tabpanel"
+      aria-labelledby="diplomatic-tab"
+    >
+      {{ inscription.transcription_diplomatic|safe }}
+    </div>
+  </div>
+</div>
+
+{% if inscription.transcription_appcrit %}
+<div class="inscr-div inscription-appcrit">
+  <p>{{ inscription.transcription_appcrit }}</p>
+</div>
+{% endif %}
+
+<div class="inscr-div inscription-translation">
+  <p><strong>English translation</strong></p>
+  <p>{{ inscription.translation_english|safe }}</p>
+</div>
+
+<div class="inscr-div inscription-commentary">
+  <p><strong>Commentary</strong></p>
+  <p>{{ inscription.commentary }}</p>
+</div>
+
+<div class="inscr-div inscription-bibliography">
+  <p><strong>Bibliography</strong></p>
+  {{ inscription.bibliography_text }}
+</div>
+
+<div class="inscr-div inscription-images">
+  <p><strong>Images</strong></p>
+  {% if inscription.images.all %}
+  <img
+    class="inscription-thumbnail"
+    src="{{ inscription.images.all.0.image_url }}"
+    alt="{{ inscription.title }}"
+  />
+  <caption>
+    {{ inscription.images.all.0.caption }}
+  </caption>
+  {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "lepcismagna/layout.html" %} {% block body %}
+
+<div class="index-header">
+  <h2>Findspots</h2>
+</div>
+
+<table class="table table-striped table-hover table-bordered">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col">Findspot (upper level)</th>
+      <th scope="col">Findspot (intermediate level)</th>
+      <th scope="col">Findspot (lower level)</th>
+      <th scope="col">Gazetteer</th>
+      <th scope="col">References</th>
+    </tr>
+  </thead>
+  <tbody class="table-light">
+    {% for findspot in findspots %}
+    <tr>
+      <th scope="row">{{ findspot.findspots_upper }}</th>
+      <td>{{ findspot.findspots_intermediate }}</td>
+      <td>{{ findspot.findspots_lower }}</td>
+      <td>{{ findspot.gazetteer }}</td>
+      <td>
+        <ul>
+          {% for inscription_reference in findspot.inscription_references.all %}
+          <li class="inscription-list-item">
+            <a
+              href="{% url 'inscription_detail' inscription_reference.reference_id|default:'No reference ID' %}"
+            >
+              {{ inscription_reference.reference_id }}.{{
+              inscription_reference.line_number_reference }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

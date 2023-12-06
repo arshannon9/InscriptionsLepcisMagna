@@ -1,0 +1,49 @@
+{% extends "lepcismagna/layout.html" %} {% block body %}
+
+<div class="index-header">
+  <h2>Emperors and Imperial Family</h2>
+  <ul class="index-header-list">
+    <li>
+      <p>
+        Square brackets [ ] indicate that the name/word is partially or
+        completely restored in this inscription.
+      </p>
+    </li>
+  </ul>
+</div>
+
+<table class="table table-striped table-hover table-bordered">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col">Person</th>
+      <th scope="col">Epithets</th>
+      <th scope="col">External resource</th>
+      <th scope="col">References</th>
+    </tr>
+  </thead>
+  <tbody class="table-light">
+    {% for emperor_imperial_family in emperors_imperial_family %}
+    <tr>
+      <th scope="row">{{ emperor_imperial_family.person }}</th>
+      <td>{{ emperor_imperial_family.epithet }}</td>
+      <td>{{ emperor_imperial_family.external_resource }}</td>
+      <td>
+        <ul>
+          {% for inscription_reference in
+          emperor_imperial_family.inscription_references.all %}
+          <li class="inscription-list-item">
+            <a
+              href="{% url 'inscription_detail' inscription_reference.reference_id|default:'No reference ID' %}"
+            >
+              {{ inscription_reference.reference_id }}.{{
+              inscription_reference.line_number_reference }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "lepcismagna/layout.html" %} {% block body %}
+<div class="container" id="inscriptions">
+  <div class="index-header">
+    <h2>Inscriptions</h2>
+  </div>
+  <ul id="inscriptions-list">
+    {% for inscription in inscriptions %}
+    <li>
+      <a
+        href="{% url 'inscription_detail' inscription.reference_id %}"
+        class="inscription-link"
+      >
+        <div class="container">
+          {% if inscription.images.all %}
+          <img
+            class="inscription-thumbnail"
+            src="{{ inscription.images.all.0.image_url }}"
+            alt="{{ inscription.title }}"
+          />
+          {% endif %}
+          <div class="inscription-info">
+            <h3>{{ inscription.title }}</h3>
+            <h4>{{ inscription.reference_id }}</h4>
+            <p><strong>Findspot: </strong>{{ inscription.findspot_desc }}</p>
+          </div>
+        </div>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

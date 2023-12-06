@@ -1,0 +1,47 @@
+{% extends "lepcismagna/layout.html" %} {% block body %}
+
+<div class="index-header">
+  <h2>Words</h2>
+  <ul class="index-header-list">
+    <li>
+      <p>
+        Square brackets [ ] indicate that the name/word is partially or
+        completely restored in this inscription.
+      </p>
+    </li>
+  </ul>
+</div>
+
+<table class="table table-striped table-hover table-bordered">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col">Lemma</th>
+      <th scope="col">Language Code</th>
+      <th scope="col">References</th>
+    </tr>
+  </thead>
+  <tbody class="table-light">
+    {% for word in words %}
+    <tr>
+      <th scope="row">{{ word.lemma }}</th>
+      <td>{{ word.language_code }}</td>
+      <td>
+        <ul>
+          {% for inscription_reference in word.inscription_references.all %}
+          <li class="inscription-list-item">
+            <a
+              href="{% url 'inscription_detail' inscription_reference.reference_id|default:'No reference ID' %}"
+            >
+              {{ inscription_reference.reference_id }}.{{
+              inscription_reference.line_number_reference }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
