@@ -85,8 +85,8 @@ class InscriptionBibliography(models.Model):
     class Meta:
         verbose_name_plural = 'inscription bibliographies'
 
-    inscriptions = models.ForeignKey('Inscription', on_delete=models.CASCADE)
-    bibliography = models.ForeignKey('Bibliography', on_delete=models.CASCADE)
+    inscriptions = models.ForeignKey('Inscription', on_delete=models.CASCADE, null=True)
+    bibliography = models.ForeignKey('Bibliography', on_delete=models.CASCADE, null=True)
     page_number_references = models.CharField(max_length=50)
 
 class EpigraphicReference(models.Model):
@@ -99,8 +99,8 @@ class EpigraphicReference(models.Model):
 
 # Through model connecting Inscription and EpigraphicReference
 class InscriptionReference(models.Model):
-    inscription = models.ForeignKey('Inscription', on_delete=models.CASCADE)
-    reference = models.ForeignKey('EpigraphicReference', on_delete=models.CASCADE)
+    inscription = models.ForeignKey('Inscription', on_delete=models.CASCADE, null=True)
+    reference = models.ForeignKey('EpigraphicReference', on_delete=models.CASCADE, null=True)
     reference_number = models.CharField(max_length=20, blank=True)
 
 
@@ -138,8 +138,8 @@ class Abbreviation(models.Model):
 
 # Through model for the relationship between Inscription and Abbreviation
 class InscriptionAbbreviation(models.Model):
-    inscription = models.ForeignKey('Inscription', on_delete=models.CASCADE)
-    abbreviation = models.ForeignKey('Abbreviation', on_delete=models.CASCADE)
+    inscription = models.ForeignKey('Inscription', on_delete=models.CASCADE, null=True)
+    abbreviation = models.ForeignKey('Abbreviation', on_delete=models.CASCADE, null=True)
     line_number_reference = models.CharField(max_length=50, blank=True)
 
 class AgeAtDeath(models.Model):
