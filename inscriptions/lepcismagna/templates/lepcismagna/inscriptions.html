@@ -7,7 +7,7 @@
     {% for inscription in inscriptions %}
     <li>
       <a
-        href="{% url 'inscription_detail' inscription.reference_id %}"
+        href="{% url 'inscription_detail' inscription.inscription_id %}"
         class="inscription-link"
       >
         <div class="container">
@@ -20,7 +20,7 @@
           {% endif %}
           <div class="inscription-info">
             <h3>{{ inscription.title }}</h3>
-            <h4>{{ inscription.reference_id }}</h4>
+            <h4>{{ inscription.inscription_id }}</h4>
             <p><strong>Findspot: </strong>{{ inscription.findspot_desc }}</p>
           </div>
         </div>

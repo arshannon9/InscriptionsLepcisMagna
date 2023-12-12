@@ -26,23 +26,20 @@
     <tr>
       <th scope="row">{{ divine_sacred_being.divine_being }}</th>
       <td>{{ divine_sacred_being.epithet }}</td>
-      <td>{{ divine_sacred_being.external_resource }}</td>
+      <td><a href="{{ divine_sacred_being.external_resource }}">{{ divine_sacred_being.external_resource }}</a></td>
       <td>
         <ul>
-          {% for inscription_reference in
-          divine_sacred_being.inscription_references.all %}
+          {% for inscription in divine_sacred_being.inscriptions.all %}
           <li class="inscription-list-item">
-            <a
-              href="{% url 'inscription_detail' inscription_reference.reference_id|default:'No reference ID' %}"
-            >
-              {{ inscription_reference.reference_id }}.{{
-              inscription_reference.line_number_reference }}
+            <a href="{% url 'inscription_detail' inscription.inscription_id|default:'No reference ID' %}">
+              {{ inscription.inscription_id }}
             </a>
           </li>
           {% endfor %}
         </ul>
       </td>
     </tr>
+    {% endfor %}
   </tbody>
 </table>
 

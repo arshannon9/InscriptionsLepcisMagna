@@ -1,44 +1,34 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 from django.db import models
 
 # Model for user handling
-class User(AbstractUser):
+class UserDossier(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     dossier = models.ManyToManyField("Inscription", blank=True, related_name="dossiers")
 
-    # Add related_name to avoid clashes with auth.User model
-    groups = models.ManyToManyField(
-        'auth.Group',
-        related_name='user_groups',
-        related_query_name='user_group',
-        blank=True,
-    )
-
-    # Add related_name to avoid clashes with auth.User model
-    user_permissions = models.ManyToManyField(
-        'auth.Permission',
-        related_name='user_permissions',
-        related_query_name='user_permission',
-        blank=True,
-    )
-
     def __str__(self):
-        return self.username
+        return self.user
 
  # Primary model for inscriptions   
 class Inscription(models.Model):
     entry_creation_time = models.DateTimeField(auto_now_add=True)
-    entry_creator = models.ForeignKey('User', on_delete=models.CASCADE, blank=True, null=True)
+    entry_creator = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     is_validated = models.BooleanField(default=False)
     inscription_id = models.CharField(max_length=20, blank=True)
     title = models.CharField(max_length=100, blank=True)
     description = models.TextField(blank=True)
+    materials = models.ManyToManyField('Material', blank=True)
+    object_types = models.ManyToManyField('ObjectType', blank=True)
     text = models.TextField(blank=True)
+    techniques = models.ManyToManyField('Technique', blank=True)
     letters = models.TextField(blank=True)
+    languages = models.ManyToManyField('Language', blank=True)
     date = models.CharField(max_length=50)
     findspot_desc = models.TextField(blank=True)
     associated_inscr = models.ManyToManyField('self', blank=True)
     original_location = models.CharField(max_length=255)
     last_recorded_location = models.CharField(max_length=255)
+    repositories = models.ManyToManyField('Repository', blank=True)
     categories = models.ManyToManyField('Category', blank=True)
     transcription_interpretive = models.TextField(blank=True)
     transcription_diplomatic = models.TextField(blank=True)
@@ -169,15 +159,18 @@ class DivineSacredBeing(models.Model):
 class EmperorImperialFamily(models.Model):
 
     class Meta:
-        verbose_name_plural = 'emperors and imperial families'
+        verbose_name_plural = 'emperors and imperial family members'
 
     person = models.CharField(max_length=50, blank=True)
-    epithet = models.CharField(max_length=50, blank=True)
+    regnal_name = models.CharField(max_length=255, blank=True)
+    epithet = models.CharField(max_length=255, blank=True)
+    life = models.CharField(max_length=25, blank=True)
+    reign = models.CharField(max_length=25, blank=True)
     external_resource = models.URLField(max_length=255, blank=True)
     inscriptions = models.ManyToManyField('Inscription', blank=True)
 
     def __str__(self):
-        return f"{ self.person } - { self.epithet }"
+        return self.person
 
 class Erasure(models.Model):
     erased_text = models.TextField(blank=True)
@@ -202,10 +195,31 @@ class Fragment(models.Model):
 
     def __str__(self):
         return self.fragment
+    
+class Language(models.Model):
+    language = models.CharField(max_length=50, blank=True)
+    inscriptions = models.ManyToManyField('Inscription', blank=True)
+
+    def __str__(self):
+        return self.language
+    
+class Material(models.Model):
+    material = models.CharField(max_length=50, blank=True)
+    inscriptions = models.ManyToManyField('Inscription', blank=True)
+
+    def __str__(self):
+        return self.material
+    
+class ObjectType(models.Model):
+    object_type = models.CharField(max_length=50, blank=True)
+    inscriptions = models.ManyToManyField('Inscription', blank=True)
+
+    def __str__(self):
+        return self.object_type
 
 class Organization(models.Model):
-    name = models.CharField(max_length=50, blank=True)
-    epithets = models.CharField(max_length=50, blank=True)
+    name = models.CharField(max_length=255, blank=True)
+    epithets = models.CharField(max_length=255, blank=True)
     external_resource = models.URLField(max_length=255, blank=True)
     inscriptions = models.ManyToManyField('Inscription', blank=True)
 
@@ -240,12 +254,30 @@ class PlaceName(models.Model):
 
     def __str__(self):
         return f"{ self.place_name } - { self.attested_form }"
+    
+class Repository(models.Model):
+    class Meta:
+        verbose_name_plural = 'repositories'
+
+    repository = models.CharField(max_length=100, blank=True)
+    inscriptions = models.ManyToManyField('Inscription', blank=True)
+
+    def __str__(self):
+        return self.repository
 
 class Symbol(models.Model):
     symbol = models.CharField(max_length=20, blank=True)
     inscriptions = models.ManyToManyField('Inscription', blank=True)
+
     def __str__(self):
         return self.symbol
+    
+class Technique(models.Model):
+    technique = models.CharField(max_length=50, blank=True)
+    inscriptions = models.ManyToManyField('Inscription', blank=True)
+
+    def __str__(self):
+        return self.technique
 
 class Word(models.Model):
     lemma = models.CharField(max_length=20, blank=True)

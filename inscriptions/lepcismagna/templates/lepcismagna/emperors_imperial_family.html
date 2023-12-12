@@ -1,12 +1,15 @@
 {% extends "lepcismagna/layout.html" %} {% block body %}
 
 <div class="index-header">
-  <h2>Emperors and Imperial Family</h2>
+  <h2>Emperors and Imperial Family Members</h2>
   <ul class="index-header-list">
     <li>
       <p>
         Square brackets [ ] indicate that the name/word is partially or
         completely restored in this inscription.
+      </p>
+      <p>
+        Emperors in ALL CAPS.
       </p>
     </li>
   </ul>
@@ -16,7 +19,10 @@
   <thead class="table-dark">
     <tr>
       <th scope="col">Person</th>
+      <th scope="col">Regnal Name</th>
       <th scope="col">Epithets</th>
+      <th scope="col">Life</th>
+      <th scope="col">Reign</th>
       <th scope="col">External resource</th>
       <th scope="col">References</th>
     </tr>
@@ -25,24 +31,24 @@
     {% for emperor_imperial_family in emperors_imperial_family %}
     <tr>
       <th scope="row">{{ emperor_imperial_family.person }}</th>
+      <td>{{ emperor_imperial_family.regnal_name }}</td>
       <td>{{ emperor_imperial_family.epithet }}</td>
-      <td>{{ emperor_imperial_family.external_resource }}</td>
+      <td>{{ emperor_imperial_family.life }}</td>
+      <td>{{ emperor_imperial_family.reign }}</td>
+      <td><a href="{{ emperor_imperial_family.external_resource }}">{{ emperor_imperial_family.external_resource }}</a></td>
       <td>
         <ul>
-          {% for inscription_reference in
-          emperor_imperial_family.inscription_references.all %}
+          {% for inscription in emperor_imperial_family.inscriptions.all %}
           <li class="inscription-list-item">
-            <a
-              href="{% url 'inscription_detail' inscription_reference.reference_id|default:'No reference ID' %}"
-            >
-              {{ inscription_reference.reference_id }}.{{
-              inscription_reference.line_number_reference }}
+            <a href="{% url 'inscription_detail' inscription.inscription_id|default:'No inscription ID' %}">
+              {{ inscription.inscription_id }}
             </a>
           </li>
           {% endfor %}
         </ul>
       </td>
     </tr>
+    {% endfor %}
   </tbody>
 </table>
 

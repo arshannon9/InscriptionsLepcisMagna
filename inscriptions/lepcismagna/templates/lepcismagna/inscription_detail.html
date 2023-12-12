@@ -1,21 +1,16 @@
 {% extends "lepcismagna/layout.html" %} {% block body %}
 
 <div class="inscription-header">
-  <h1>{{ inscription.reference_id }} - {{ inscription.title }}</h1>
+  <h1>{{ inscription.inscription_id }} - {{ inscription.title }}</h1>
   {% if user.is_authenticated %}
+  <p>User Dossier Contents: {{ user_dossier.dossier.all }}</p>  <!-- Debugging line -->
   <form
     method="POST"
-    action="{% url 'toggle_dossier' reference_id=inscription.reference_id %}"
+    action="{% url 'toggle_dossier' inscription_id=inscription.inscription_id %}"
   >
-    {% csrf_token %} {% if inscription in user.dossier.all %}
-    <input
-      class="btn btn-secondary"
-      type="submit"
-      value="Remove from Dossier"
-    />
-    {% else %}
-    <input class="btn btn-danger" type="submit" value="Add to Dossier" />
-    {% endif %}
+    {% csrf_token %} 
+    <input class="btn {% if is_in_dossier %}btn-secondary{% else %}btn-danger{% endif %}" type="submit" value="{% if is_in_dossier %}Remove from Dossier{% else %}Add to Dossier{% endif %}" />
+
   </form>
   {% endif %}
 </div>
@@ -67,7 +62,7 @@
       </button>
     </li>
   </ul>
-  <div class="tab-content" id="transcriptions-content">
+  <!-- <div class="tab-content" id="transcriptions-content">
     <div
       class="tab-pane fade show active"
       id="interpretive"
@@ -85,7 +80,21 @@
       {{ inscription.transcription_diplomatic|safe }}
     </div>
   </div>
+</div> -->
+
+<div class="tab-content" id="transcriptions-content">
+  <div class="tab-pane fade show active" id="interpretive" role="tabpanel" aria-labelledby="interpretive-tab">
+        {% for line in lines_interpretive %}
+            {{ line }}
+        {% endfor %}
+  </div>
+  <div class="tab-pane fade" id="diplomatic" role="tabpanel" aria-labelledby="diplomatic-tab">
+        {% for line in lines_diplomatic %}
+            {{ line }}
+        {% endfor %}
+  </div>
 </div>
+
 
 {% if inscription.transcription_appcrit %}
 <div class="inscr-div inscription-appcrit">
@@ -98,14 +107,16 @@
   <p>{{ inscription.translation_english|safe }}</p>
 </div>
 
+{% if inscription.commentary %}
 <div class="inscr-div inscription-commentary">
   <p><strong>Commentary</strong></p>
   <p>{{ inscription.commentary }}</p>
 </div>
+{% endif %}
 
 <div class="inscr-div inscription-bibliography">
   <p><strong>Bibliography</strong></p>
-  {{ inscription.bibliography_text }}
+  {{ inscription.bibliography_text|safe }}
 </div>
 
 <div class="inscr-div inscription-images">

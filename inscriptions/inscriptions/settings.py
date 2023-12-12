@@ -130,4 +130,4 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # User handling
-AUTH_USER_MODEL = 'lepcismagna.User'
+# AUTH_USER_MODEL = 'lepcismagna.User'

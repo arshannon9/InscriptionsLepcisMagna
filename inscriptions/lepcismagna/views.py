@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 
-from .models import User, Inscription, Bibliography, InscriptionBibliography, EpigraphicReference, InscriptionReference, Category, Image, Abbreviation, InscriptionAbbreviation, AgeAtDeath, DivineSacredBeing, EmperorImperialFamily, Erasure, Findspot, Fragment, Organization, Person, PersonalName, PlaceName, Symbol, Word
+from .models import UserDossier, Inscription, Bibliography, InscriptionBibliography, EpigraphicReference, InscriptionReference, Category, Image, Abbreviation, InscriptionAbbreviation, AgeAtDeath, DivineSacredBeing, EmperorImperialFamily, Erasure, Findspot, Fragment, Organization, Person, PersonalName, PlaceName, Symbol, Word
 from .forms import InscriptionEntryForm
 
 
@@ -95,20 +95,25 @@ def create_entry(request):
 @login_required
 def dossier(request):
     # Retrieve the user's dossier and display on the dossier page
-    user = request.user
-    dossier_inscriptions = user.dossier.all()
+    user_dossier, created = UserDossier.objects.get_or_create(user=request.user)
+    dossier_inscriptions = user_dossier.dossier.all()
     return render(request, "lepcismagna/dossier.html", {"dossier_inscriptions": dossier_inscriptions})
 
 @login_required
-def toggle_dossier(request, reference_id):
+def toggle_dossier(request, inscription_id):
     if request.method == 'POST':
         # Add or remove inscription from dossier
-        inscription = get_object_or_404(Inscription, reference_id=reference_id)
-        if inscription in request.user.dossier.all():
-            request.user.dossier.remove(inscription)
+        inscription = get_object_or_404(Inscription, inscription_id=inscription_id)
+        user_dossier, created = UserDossier.objects.get_or_create(user=request.user)
+
+        is_in_dossier = inscription in user_dossier.dossier.all()
+
+        if is_in_dossier:
+            user_dossier.dossier.remove(inscription)
         else:
-            request.user.dossier.add(inscription)
-    return HttpResponseRedirect(reverse('inscription_detail', args=[reference_id]))
+            user_dossier.dossier.add(inscription)
+
+    return HttpResponseRedirect(reverse('inscription_detail', args=[inscription_id]))
 
 # Inscription information handling
 
@@ -117,10 +122,25 @@ def inscriptions(request):
     inscriptions = Inscription.objects.all()
     return render(request, "lepcismagna/inscriptions.html", {"inscriptions": inscriptions})
 
-def inscription_detail_view(request, reference_id):
+def inscription_detail_view(request, inscription_id):
     # Display the details of an inscription
-    inscription = get_object_or_404(Inscription, reference_id=reference_id)
-    return render(request, 'lepcismagna/inscription_detail.html', {'inscription': inscription})
+    inscription = get_object_or_404(Inscription, inscription_id=inscription_id)
+
+    lines_interpretive = process_text(inscription.transcription_interpretive)
+    lines_diplomatic = process_text(inscription.transcription_diplomatic)
+
+    return render(request, 'lepcismagna/inscription_detail.html', {
+        'inscription': inscription,
+        'lines_interpretive': lines_interpretive,
+        'lines_diplomatic': lines_diplomatic,
+        })
+
+def process_text(text):
+    lines = text.split("\n")
+    for i in range(len(lines)):
+        if (i + 1) % 5 == 0:
+            lines[i] = str(i + 1) + "\t" + lines[i]
+    return lines
 
 def categories(request):
     # Retrieve all categories and display on categories page
