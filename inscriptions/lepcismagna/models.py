@@ -113,7 +113,7 @@ class Image(models.Model):
     caption = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
-        return self.caption
+        return f"{ self.inscription_id } - { self.caption }"
 
 
 # Models for index handling

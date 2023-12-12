@@ -16,24 +16,43 @@
     {% for bibliography_entry in bibliography_entries %}
     <tr>
       <th scope="row">{{ bibliography_entry.short_title }}</th>
-      <td>{{ bibliography_entry.entry }}</td>
+      <td>{{ bibliography_entry.entry|safe }}</td>
       <td>
         <ul>
-          {% for inscription_reference in
-          bibliography_entry.inscription_references.all %}
+          {% for inscription in bibliography_entry.inscriptions.all %}
           <li class="inscription-list-item">
             <a
-              href="{% url 'inscription_detail' inscription_reference.reference_id|default:'No reference ID' %}"
+              href="{% url 'inscription_detail' inscription.inscription_id|default:'No inscription ID' %}"
             >
-              {{ inscription_reference.reference_id }}.{{
-              inscription_reference.line_number_reference }}
+              {{ inscription.inscription_id }}
             </a>
           </li>
           {% endfor %}
         </ul>
       </td>
     </tr>
+    {% endfor %}
   </tbody>
 </table>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Get the table rows and convert them to an array
+    var rows = Array.from(document.querySelectorAll('tbody tr'));
+
+    // Sort the array based on the content of the first column
+    rows.sort(function (a, b) {
+      var keyA = a.querySelector('th').innerText.toUpperCase();
+      var keyB = b.querySelector('th').innerText.toUpperCase();
+      return keyA.localeCompare(keyB);
+    });
+
+    // Remove existing rows and append the sorted rows
+    var tbody = document.querySelector('tbody');
+    rows.forEach(function (row) {
+      tbody.appendChild(row);
+    });
+  });
+</script>
 
 {% endblock %}

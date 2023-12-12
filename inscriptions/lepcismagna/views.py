@@ -126,21 +126,18 @@ def inscription_detail_view(request, inscription_id):
     # Display the details of an inscription
     inscription = get_object_or_404(Inscription, inscription_id=inscription_id)
 
-    lines_interpretive = process_text(inscription.transcription_interpretive)
-    lines_diplomatic = process_text(inscription.transcription_diplomatic)
+    # lines_interpretive = process_text(inscription.transcription_interpretive)
+    # lines_diplomatic = process_text(inscription.transcription_diplomatic)
 
     return render(request, 'lepcismagna/inscription_detail.html', {
         'inscription': inscription,
-        'lines_interpretive': lines_interpretive,
-        'lines_diplomatic': lines_diplomatic,
+        # 'lines_interpretive': lines_interpretive,
+        # 'lines_diplomatic': lines_diplomatic,
         })
 
-def process_text(text):
-    lines = text.split("\n")
-    for i in range(len(lines)):
-        if (i + 1) % 5 == 0:
-            lines[i] = str(i + 1) + "\t" + lines[i]
-    return lines
+# def process_text(text):
+#     lines = [line.strip() for line in text.split("\n")]
+#     return lines
 
 def categories(request):
     # Retrieve all categories and display on categories page

@@ -3,7 +3,6 @@
 <div class="inscription-header">
   <h1>{{ inscription.inscription_id }} - {{ inscription.title }}</h1>
   {% if user.is_authenticated %}
-  <p>User Dossier Contents: {{ user_dossier.dossier.all }}</p>  <!-- Debugging line -->
   <form
     method="POST"
     action="{% url 'toggle_dossier' inscription_id=inscription.inscription_id %}"
@@ -62,7 +61,7 @@
       </button>
     </li>
   </ul>
-  <!-- <div class="tab-content" id="transcriptions-content">
+  <div class="tab-content" id="transcriptions-content">
     <div
       class="tab-pane fade show active"
       id="interpretive"
@@ -80,20 +79,24 @@
       {{ inscription.transcription_diplomatic|safe }}
     </div>
   </div>
-</div> -->
+</div>
 
-<div class="tab-content" id="transcriptions-content">
+<!-- <div class="tab-content" id="transcriptions-content">
   <div class="tab-pane fade show active" id="interpretive" role="tabpanel" aria-labelledby="interpretive-tab">
+      <pre>  
         {% for line in lines_interpretive %}
             {{ line }}
         {% endfor %}
+      </pre>
   </div>
   <div class="tab-pane fade" id="diplomatic" role="tabpanel" aria-labelledby="diplomatic-tab">
+      <pre>
         {% for line in lines_diplomatic %}
             {{ line }}
         {% endfor %}
+      </pre>
   </div>
-</div>
+</div> -->
 
 
 {% if inscription.transcription_appcrit %}
@@ -122,14 +125,16 @@
 <div class="inscr-div inscription-images">
   <p><strong>Images</strong></p>
   {% if inscription.images.all %}
+  {% for image in inscription.images.all %}
   <img
     class="inscription-thumbnail"
-    src="{{ inscription.images.all.0.image_url }}"
+    src="{{ image.image_url }}"
     alt="{{ inscription.title }}"
   />
   <caption>
-    {{ inscription.images.all.0.caption }}
+    {{ image.caption }}
   </caption>
+  {% endfor %}
   {% endif %}
 </div>
 

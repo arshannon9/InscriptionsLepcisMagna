@@ -187,10 +187,10 @@ body {
     border: 1px solid black;
   }
 
-  .tab-content {
+  /* .tab-content {
     white-space: pre;
     tab-size: 4;
-}
+} */
   
   .text-danger {
     color: #d6544d !important;
