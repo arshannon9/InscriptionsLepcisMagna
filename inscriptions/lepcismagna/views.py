@@ -1,12 +1,14 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.db.models import Q
+from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 
 from .models import UserDossier, Inscription, Bibliography, InscriptionBibliography, EpigraphicReference, InscriptionReference, Category, Image, Abbreviation, InscriptionAbbreviation, AgeAtDeath, DivineSacredBeing, EmperorImperialFamily, Erasure, Findspot, Fragment, Organization, Person, PersonalName, PlaceName, Symbol, Word
-from .forms import InscriptionEntryForm
+from .forms import InscriptionEntryForm, InscriptionSearchForm
 
 
 def index(request):
@@ -113,6 +115,7 @@ def toggle_dossier(request, inscription_id):
         else:
             user_dossier.dossier.add(inscription)
 
+    # If the request is not a POST request, redirect to the inscription detail page
     return HttpResponseRedirect(reverse('inscription_detail', args=[inscription_id]))
 
 # Inscription information handling
@@ -122,22 +125,19 @@ def inscriptions(request):
     inscriptions = Inscription.objects.all()
     return render(request, "lepcismagna/inscriptions.html", {"inscriptions": inscriptions})
 
+@login_required
 def inscription_detail_view(request, inscription_id):
     # Display the details of an inscription
     inscription = get_object_or_404(Inscription, inscription_id=inscription_id)
 
-    # lines_interpretive = process_text(inscription.transcription_interpretive)
-    # lines_diplomatic = process_text(inscription.transcription_diplomatic)
+    # Check if the inscription is in the user's dossier
+    user_dossier, created = UserDossier.objects.get_or_create(user=request.user)
+    is_in_dossier = inscription in user_dossier.dossier.all()
 
     return render(request, 'lepcismagna/inscription_detail.html', {
         'inscription': inscription,
-        # 'lines_interpretive': lines_interpretive,
-        # 'lines_diplomatic': lines_diplomatic,
-        })
-
-# def process_text(text):
-#     lines = [line.strip() for line in text.split("\n")]
-#     return lines
+        'is_in_dossier': is_in_dossier,
+    })
 
 def categories(request):
     # Retrieve all categories and display on categories page
@@ -161,6 +161,52 @@ def category_view(request, category_name):
 def bibliography(request):
     bibliography_entries = Bibliography.objects.all()
     return render(request, "lepcismagna/bibliography.html", {"bibliography_entries": bibliography_entries})
+
+# Search handling
+def inscription_search(request):
+    form = InscriptionSearchForm(request.GET)
+    inscriptions = Inscription.objects.all()
+
+    if form.is_valid():
+        search_terms = form.cleaned_data.get('search_terms')
+        findspot = form.cleaned_data.get('findspot')
+        repository = form.cleaned_data.get('repository')
+        material = form.cleaned_data.get('material')
+        technique = form.cleaned_data.get('technique')
+        object_type = form.cleaned_data.get('object_type')
+        category = form.cleaned_data.get('category')
+        language = form.cleaned_data.get('language')
+
+        # Filter query based on provided search terms
+        if search_terms:
+            inscriptions = inscriptions.filter(
+                Q(title__icontains=search_terms) |
+                Q(transcription_interpretive__icontains=search_terms) | 
+                Q(translation_english__icontains=search_terms)
+            )
+
+        if findspot:
+            inscriptions = inscriptions.filter(findspots=findspot)
+        
+        if repository:
+            inscriptions = inscriptions.filter(repositories=repository)
+
+        if material:
+            inscriptions = inscriptions.filter(materials=material)
+
+        if technique:
+            inscriptions = inscriptions.filter(techniques=technique)
+
+        if object_type:
+            inscriptions = inscriptions.filter(object_types=object_type)
+
+        if category:
+            inscriptions = inscriptions.filter(categories=category)
+
+        if language:
+            inscriptions = inscriptions.filter(languages=language)
+    
+    return render(request, "lepcismagna/inscription_search.html", {'form': form, 'inscriptions': inscriptions})
 
 # Epigraphic indices handling
 

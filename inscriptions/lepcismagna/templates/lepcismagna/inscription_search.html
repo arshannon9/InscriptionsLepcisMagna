@@ -1,0 +1,87 @@
+{% extends "lepcismagna/layout.html" %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <h1>Inscription Search</h1>
+            <form method="get" action="{% url 'inscription_search' %}" id="inscription-search-form">
+                <div class="form-group">
+                    {{ form.search_terms.label_tag }}
+                    {{ form.search_terms }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.findspot.label_tag }}
+                    {{ form.findspot }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.repository.label_tag }}
+                    {{ form.repository }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.material.label_tag }}
+                    {{ form.material }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.technique.label_tag }}
+                    {{ form.technique }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.object_type.label_tag }}
+                    {{ form.object_type }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.category.label_tag }}
+                    {{ form.category }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.language.label_tag }}
+                    {{ form.language }}
+                </div>
+
+                <button type="submit" class="btn btn-danger">Search</button>
+            </form>
+        </div>
+
+        <div class="col-md-6">
+            <h1>Results</h1>
+            {% if inscriptions %}
+            <ul id="inscriptions-list">
+                {% for inscription in inscriptions %}
+                <li>
+                  <a
+                    href="{% url 'inscription_detail' inscription.inscription_id %}"
+                    class="inscription-link"
+                  >
+                    <div class="container">
+                      {% if inscription.images.all %}
+                      <img
+                        class="inscription-thumbnail"
+                        src="{{ inscription.images.all.0.image_url }}"
+                        alt="{{ inscription.title }}"
+                      />
+                      {% endif %}
+                      <div class="inscription-info">
+                        <h3>{{ inscription.title }}</h3>
+                        <h4>{{ inscription.inscription_id }}</h4>
+                        <p><strong>Findspot: </strong>{{ inscription.findspot_desc }}</p>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+            <p>No matching inscriptions found.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

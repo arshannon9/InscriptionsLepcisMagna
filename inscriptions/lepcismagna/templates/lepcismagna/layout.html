@@ -71,6 +71,13 @@
               </a>
             </li>
 
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'inscription_search' %}">
+                  Search
+                </a>
+              </li>
+
             <li class="nav-item">
               <a class="nav-link" href="{% url 'categories' %}"> Categories </a>
             </li>
@@ -80,6 +87,20 @@
                 Bibliography
               </a>
             </li>
+
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'create_entry' %}">
+                Create Entry
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'dossier' %}">
+                Dossier
+              </a>
+            </li>
+            {% endif %}
 
             <li class="nav-item dropdown">
               <div class="btn-group">
@@ -162,19 +183,7 @@
                 </ul>
               </div>
             </li>
-
             {% if user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'create_entry' %}">
-                Create New Entry
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'dossier' %}">
-                Epigraphic Dossier
-              </a>
-            </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'logout' %}"> Logout </a>
             </li>

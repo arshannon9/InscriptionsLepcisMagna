@@ -201,8 +201,11 @@ body {
   #dossier-list {
     list-style: none;
     padding-left: 0;
-  
     margin: 0;
+  }
+
+  #inscription-search-form {
+    text-align: start;
   }
   
   #login-form,

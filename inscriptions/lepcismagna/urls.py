@@ -14,6 +14,7 @@ urlpatterns = [
     path("toggle_dossier/<str:inscription_id>", views.toggle_dossier, name="toggle_dossier"),
     path("inscriptions", views.inscriptions, name="inscriptions"),
     path("inscriptions/<str:inscription_id>", views.inscription_detail_view, name="inscription_detail"),
+    path("inscription_search", views.inscription_search, name="inscription_search"),
     path("categories", views.categories, name="categories"),
     path("categories/<str:category_name>", views.category_view, name="category_view"),
     path("bibliography", views.bibliography, name="bibliography"),

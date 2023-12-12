@@ -1,8 +1,7 @@
 from django.contrib import admin
-from .models import UserDossier, Inscription, Bibliography, InscriptionBibliography, EpigraphicReference, InscriptionReference, Category, Image, Abbreviation, InscriptionAbbreviation, AgeAtDeath, DivineSacredBeing, EmperorImperialFamily, Erasure, Findspot, Fragment, Language, Material, ObjectType, Organization, Person, PersonalName, PlaceName, Repository, Technique, Symbol, Word
+from .models import Inscription, Bibliography, InscriptionBibliography, EpigraphicReference, InscriptionReference, Category, Image, Abbreviation, InscriptionAbbreviation, AgeAtDeath, DivineSacredBeing, EmperorImperialFamily, Erasure, Findspot, Fragment, Language, Material, ObjectType, Organization, Person, PersonalName, PlaceName, Repository, Technique, Symbol, Word
 
 # Register your models here.
-admin.site.register(UserDossier)
 admin.site.register(Inscription)
 admin.site.register(Bibliography)
 admin.site.register(InscriptionBibliography)
