@@ -2,14 +2,6 @@
 
 <div class="index-header">
   <h2>People</h2>
-  <ul class="index-header-list">
-    <li>
-      <p>
-        Square brackets [ ] indicate that the name/word is partially or
-        completely restored in this inscription.
-      </p>
-    </li>
-  </ul>
 </div>
 
 <table class="table table-striped table-hover table-bordered">
@@ -17,7 +9,7 @@
     <tr>
       <th scope="col">Person</th>
       <th scope="col">External resource</th>
-      <th scope="col">References</th>
+      <th scope="col">Inscriptions</th>
     </tr>
   </thead>
   <tbody class="table-light">
@@ -26,14 +18,13 @@
       <th scope="row">{{ person.person }}</th>
       <td>{{ person.external_resource }}</td>
       <td>
-        <ul>
-          {% for inscription_reference in person.inscription_references.all %}
+        <ul id="index-inscription-list">
+          {% for inscription in person.inscriptions.all %}
           <li class="inscription-list-item">
             <a
-              href="{% url 'inscription_detail' inscription_reference.reference_id|default:'No reference ID' %}"
+              href="{% url 'inscription_detail' inscription.inscription_id|default:'No inscription ID' %}"
             >
-              {{ inscription_reference.reference_id }}.{{
-              inscription_reference.line_number_reference }}
+              {{ inscription.inscription_id }}
             </a>
           </li>
           {% endfor %}

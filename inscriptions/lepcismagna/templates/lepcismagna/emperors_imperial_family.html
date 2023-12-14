@@ -5,10 +5,6 @@
   <ul class="index-header-list">
     <li>
       <p>
-        Square brackets [ ] indicate that the name/word is partially or
-        completely restored in this inscription.
-      </p>
-      <p>
         Emperors in ALL CAPS.
       </p>
     </li>
@@ -24,7 +20,7 @@
       <th scope="col">Life</th>
       <th scope="col">Reign</th>
       <th scope="col">External resource</th>
-      <th scope="col">References</th>
+      <th scope="col">Inscriptions</th>
     </tr>
   </thead>
   <tbody class="table-light">
@@ -37,7 +33,7 @@
       <td>{{ emperor_imperial_family.reign }}</td>
       <td><a href="{{ emperor_imperial_family.external_resource }}">{{ emperor_imperial_family.external_resource }}</a></td>
       <td>
-        <ul>
+        <ul id="index-inscription-list">
           {% for inscription in emperor_imperial_family.inscriptions.all %}
           <li class="inscription-list-item">
             <a href="{% url 'inscription_detail' inscription.inscription_id|default:'No inscription ID' %}">

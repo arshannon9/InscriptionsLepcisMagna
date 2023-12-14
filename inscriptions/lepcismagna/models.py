@@ -62,7 +62,7 @@ class Inscription(models.Model):
 class Bibliography(models.Model):
 
     class Meta:
-        verbose_name_plural = 'bibliographies'
+        verbose_name_plural = 'bibliography entries'
 
     short_title = models.CharField(max_length=50, blank=True)
     entry = models.TextField(blank=True)
@@ -70,30 +70,14 @@ class Bibliography(models.Model):
 
     def __str__(self):
         return self.short_title
-    
-
-class InscriptionBibliography(models.Model):
-
-    class Meta:
-        verbose_name_plural = 'inscription bibliographies'
-
-    inscriptions = models.ForeignKey('Inscription', on_delete=models.CASCADE, null=True)
-    bibliography = models.ForeignKey('Bibliography', on_delete=models.CASCADE, null=True)
-    page_number_references = models.CharField(max_length=50)
 
 class EpigraphicReference(models.Model):
     short_title = models.CharField(max_length=50, blank=True)
     entry = models.TextField(blank=True)
-    inscriptions = models.ManyToManyField('Inscription', through='InscriptionReference', blank=True)
+    inscriptions = models.ManyToManyField('Inscription', blank=True)
 
     def __str__(self):
         return self.short_title
-
-# Through model connecting Inscription and EpigraphicReference
-class InscriptionReference(models.Model):
-    inscription = models.ForeignKey('Inscription', on_delete=models.CASCADE, null=True)
-    reference = models.ForeignKey('EpigraphicReference', on_delete=models.CASCADE, null=True)
-    reference_number = models.CharField(max_length=20, blank=True)
 
 
 # Model for category handling
@@ -122,17 +106,10 @@ class Image(models.Model):
 class Abbreviation(models.Model):
     abbreviation = models.CharField(max_length=20, blank=True)
     expansion = models.CharField(max_length=50, blank=True)
-    inscriptions = models.ManyToManyField('Inscription', through='InscriptionAbbreviation', blank=True)
+    inscriptions = models.ManyToManyField('Inscription', blank=True)
     
     def __str__(self):
         return f"{ self.abbreviation } - { self.expansion }"
-    
-
-# Through model for the relationship between Inscription and Abbreviation
-class InscriptionAbbreviation(models.Model):
-    inscription = models.ForeignKey('Inscription', on_delete=models.CASCADE, null=True)
-    abbreviation = models.ForeignKey('Abbreviation', on_delete=models.CASCADE, null=True)
-    line_number_reference = models.CharField(max_length=50, blank=True)
 
 class AgeAtDeath(models.Model):
 

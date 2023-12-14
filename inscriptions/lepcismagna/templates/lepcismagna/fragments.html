@@ -8,7 +8,7 @@
   <thead class="table-dark">
     <tr>
       <th scope="col">Fragment</th>
-      <th scope="col">References</th>
+      <th scope="col">Inscription</th>
     </tr>
   </thead>
   <tbody class="table-light">
@@ -16,14 +16,11 @@
     <tr>
       <th scope="row">{{ fragment.fragment }}</th>
       <td>
-        <ul>
-          {% for inscription_reference in fragment.inscription_references.all %}
+        <ul id="index-inscription-list">
+          {% for inscription in fragment.inscriptions.all %}
           <li class="inscription-list-item">
-            <a
-              href="{% url 'inscription_detail' inscription_reference.reference_id|default:'No reference ID' %}"
-            >
-              {{ inscription_reference.reference_id }}.{{
-              inscription_reference.line_number_reference }}
+            <a href="{% url 'inscription_detail' inscription.inscription_id|default:'No inscription ID' %}">
+              {{ inscription.inscription_id }}
             </a>
           </li>
           {% endfor %}

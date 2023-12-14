@@ -86,7 +86,7 @@
 
 {% if inscription.transcription_appcrit %}
 <div class="inscr-div inscription-appcrit">
-  <p>{{ inscription.transcription_appcrit }}</p>
+  <p>{{ inscription.transcription_appcrit|safe }}</p>
 </div>
 {% endif %}
 

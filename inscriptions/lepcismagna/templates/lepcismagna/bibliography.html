@@ -9,7 +9,7 @@
     <tr>
       <th scope="col">Short Title</th>
       <th scope="col">Bibliographic Entry</th>
-      <th scope="col">Inscription References</th>
+      <th scope="col">Inscriptions</th>
     </tr>
   </thead>
   <tbody class="table-light">
@@ -18,7 +18,7 @@
       <th scope="row">{{ bibliography_entry.short_title }}</th>
       <td>{{ bibliography_entry.entry|safe }}</td>
       <td>
-        <ul>
+        <ul id="index-inscription-list">
           {% for inscription in bibliography_entry.inscriptions.all %}
           <li class="inscription-list-item">
             <a

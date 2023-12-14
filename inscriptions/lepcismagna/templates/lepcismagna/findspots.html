@@ -11,7 +11,7 @@
       <th scope="col">Findspot (intermediate level)</th>
       <th scope="col">Findspot (lower level)</th>
       <th scope="col">Gazetteer</th>
-      <th scope="col">References</th>
+      <th scope="col">Inscriptions</th>
     </tr>
   </thead>
   <tbody class="table-light">
@@ -20,16 +20,13 @@
       <th scope="row">{{ findspot.findspots_upper }}</th>
       <td>{{ findspot.findspots_intermediate }}</td>
       <td>{{ findspot.findspots_lower }}</td>
-      <td>{{ findspot.gazetteer }}</td>
+      <td><a href="{{ findspot.gazetteer }}">{{ findspot.gazetteer }}</a></td>
       <td>
-        <ul>
-          {% for inscription_reference in findspot.inscription_references.all %}
+        <ul id="index-inscription-list">
+          {% for inscription in findspot.inscriptions.all %}
           <li class="inscription-list-item">
-            <a
-              href="{% url 'inscription_detail' inscription_reference.reference_id|default:'No reference ID' %}"
-            >
-              {{ inscription_reference.reference_id }}.{{
-              inscription_reference.line_number_reference }}
+            <a href="{% url 'inscription_detail' inscription.inscription_id|default:'No inscription ID' %}">
+              {{ inscription.inscription_id }}
             </a>
           </li>
           {% endfor %}

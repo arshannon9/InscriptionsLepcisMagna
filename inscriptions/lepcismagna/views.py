@@ -7,7 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonRespons
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 
-from .models import UserDossier, Inscription, Bibliography, InscriptionBibliography, EpigraphicReference, InscriptionReference, Category, Image, Abbreviation, InscriptionAbbreviation, AgeAtDeath, DivineSacredBeing, EmperorImperialFamily, Erasure, Findspot, Fragment, Organization, Person, PersonalName, PlaceName, Symbol, Word
+from .models import UserDossier, Inscription, Bibliography, EpigraphicReference, Category, Image, Abbreviation, AgeAtDeath, DivineSacredBeing, EmperorImperialFamily, Erasure, Findspot, Fragment, Organization, Person, PersonalName, PlaceName, Symbol, Word
 from .forms import InscriptionEntryForm, InscriptionSearchForm
 
 
@@ -211,7 +211,7 @@ def inscription_search(request):
 # Epigraphic indices handling
 
 def abbreviations(request):
-    abbreviations = Abbreviation.objects.prefetch_related('inscription_references')
+    abbreviations = Abbreviation.objects.prefetch_related('inscriptions')
     return render(request, "lepcismagna/abbreviations.html", {"abbreviations": abbreviations})
 
 def ages_at_death(request):
