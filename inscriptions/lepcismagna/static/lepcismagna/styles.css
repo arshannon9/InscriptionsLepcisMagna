@@ -197,6 +197,7 @@ body {
   }
   
   #inscriptions-list,
+  #index-inscription-list,
   #category-items,
   #dossier-list {
     list-style: none;

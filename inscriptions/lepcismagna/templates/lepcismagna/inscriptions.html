@@ -5,6 +5,7 @@
   </div>
   <ul id="inscriptions-list">
     {% for inscription in inscriptions %}
+    {% if inscription.is_validated %}
     <li>
       <a
         href="{% url 'inscription_detail' inscription.inscription_id %}"
@@ -12,11 +13,17 @@
       >
         <div class="container">
           {% if inscription.images.all %}
-          <img
-            class="inscription-thumbnail"
-            src="{{ inscription.images.all.0.image_url }}"
-            alt="{{ inscription.title }}"
-          />
+            <img
+              class="inscription-thumbnail"
+              src="{{ inscription.images.all.0.image_url }}"
+              alt="{{ inscription.title }}"
+            />
+          {% else %}
+            <img 
+              class="inscription-thumbnail"
+              src="static/lepcismagna/no-photos.png"
+              alt="no photos available"
+            />
           {% endif %}
           <div class="inscription-info">
             <h3>{{ inscription.title }}</h3>
@@ -26,6 +33,7 @@
         </div>
       </a>
     </li>
+    {% endif %}
     {% endfor %}
   </ul>
 </div>

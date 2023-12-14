@@ -30,7 +30,7 @@ urlpatterns = [
     path("personal_names", views.personal_names, name="personal_names"),
     path("place_names", views.place_names, name="place_names"),
     path("symbols", views.symbols, name="symbols"),
-    path("words", views.words, name="words")
+    path("words", views.words, name="words"),
 ]
 
 if settings.DEBUG:

@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils.text import slugify
 
 # Model for user handling
 class UserDossier(models.Model):
@@ -17,40 +18,41 @@ class Inscription(models.Model):
     inscription_id = models.CharField(max_length=20, blank=True)
     title = models.CharField(max_length=100, blank=True)
     description = models.TextField(blank=True)
-    materials = models.ManyToManyField('Material', blank=True)
-    object_types = models.ManyToManyField('ObjectType', blank=True)
+    materials = models.ManyToManyField('Material', blank=True, related_name='materials')
+    object_types = models.ManyToManyField('ObjectType', blank=True, related_name='object_types')
     text = models.TextField(blank=True)
-    techniques = models.ManyToManyField('Technique', blank=True)
+    techniques = models.ManyToManyField('Technique', blank=True, related_name='techniques')
     letters = models.TextField(blank=True)
-    languages = models.ManyToManyField('Language', blank=True)
+    languages = models.ManyToManyField('Language', blank=True, related_name='languages')
     date = models.CharField(max_length=50)
     findspot_desc = models.TextField(blank=True)
     associated_inscr = models.ManyToManyField('self', blank=True)
     original_location = models.CharField(max_length=255)
     last_recorded_location = models.CharField(max_length=255)
-    repositories = models.ManyToManyField('Repository', blank=True)
-    categories = models.ManyToManyField('Category', blank=True)
+    repositories = models.ManyToManyField('Repository', blank=True, related_name='repositories')
+    categories = models.ManyToManyField('Category', blank=True, related_name='categories')
     transcription_interpretive = models.TextField(blank=True)
     transcription_diplomatic = models.TextField(blank=True)
     transcription_appcrit = models.TextField(blank=True)
     translation_english = models.TextField(blank=True)
     commentary = models.TextField(blank=True)
+    epigraphic_references = models.ManyToManyField('EpigraphicReference', blank=True, related_name='epigraphic_references')
     bibliography_text = models.TextField(blank=True)
-    bibliography_entries = models.ManyToManyField('Bibliography', blank=True)
-    images = models.ManyToManyField('Image', blank=True)
-    abbreviations = models.ManyToManyField('Abbreviation', blank=True)
-    age_at_death = models.ManyToManyField('AgeAtDeath', blank=True)
-    divine_sacred_beings = models.ManyToManyField('DivineSacredBeing', blank=True)
-    emperors_imperial_family = models.ManyToManyField('EmperorImperialFamily', blank=True)
-    erasures = models.ManyToManyField('Erasure', blank=True)
-    findspots = models.ManyToManyField('Findspot', blank=True)
-    fragments = models.ManyToManyField('Fragment', blank=True)
-    organizations = models.ManyToManyField('Organization', blank=True)
-    people = models.ManyToManyField('Person', blank=True)
-    personal_names = models.ManyToManyField('PersonalName', blank=True)
-    place_names = models.ManyToManyField('PlaceName', blank=True)
-    symbols = models.ManyToManyField('Symbol', blank=True)
-    words = models.ManyToManyField('Word', blank=True)
+    bibliography_entries = models.ManyToManyField('Bibliography', blank=True, related_name='bibliography_entries')
+    images = models.ManyToManyField('Image', blank=True, related_name='images')
+    abbreviations = models.ManyToManyField('Abbreviation', blank=True, related_name='abbreviations')
+    age_at_death = models.ManyToManyField('AgeAtDeath', blank=True, related_name='age_at_death')
+    divine_sacred_beings = models.ManyToManyField('DivineSacredBeing', blank=True, related_name='divine_sacred_beings')
+    emperors_imperial_family = models.ManyToManyField('EmperorImperialFamily', blank=True, related_name='emperors_imperial_family')
+    erasures = models.ManyToManyField('Erasure', blank=True, related_name='erasures')
+    findspots = models.ManyToManyField('Findspot', blank=True, related_name='findspots')
+    fragments = models.ManyToManyField('Fragment', blank=True, related_name='fragments')
+    organizations = models.ManyToManyField('Organization', blank=True, related_name='organizations')
+    people = models.ManyToManyField('Person', blank=True, related_name='people')
+    personal_names = models.ManyToManyField('PersonalName', blank=True, related_name='personal_names')
+    place_names = models.ManyToManyField('PlaceName', blank=True, related_name='place_names')
+    symbols = models.ManyToManyField('Symbol', blank=True, related_name='symbols')
+    words = models.ManyToManyField('Word', blank=True, related_name='words')
 
     def __str__(self):
         return f"{ self.inscription_id } - { self.title }"
@@ -120,7 +122,7 @@ class Image(models.Model):
 class Abbreviation(models.Model):
     abbreviation = models.CharField(max_length=20, blank=True)
     expansion = models.CharField(max_length=50, blank=True)
-    inscription_references = models.ManyToManyField('Inscription', through='InscriptionAbbreviation', blank=True)
+    inscriptions = models.ManyToManyField('Inscription', through='InscriptionAbbreviation', blank=True)
     
     def __str__(self):
         return f"{ self.abbreviation } - { self.expansion }"

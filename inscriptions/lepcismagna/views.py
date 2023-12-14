@@ -87,7 +87,7 @@ def create_entry(request):
             new_entry = form.save(commit=False)
             new_entry.entry_creator = request.user
             new_entry.save()
-            return redirect('inscription_detail', reference_id=new_entry.reference_id)
+            return render(request, "lepcismagna/inscriptions.html", {"inscriptions": inscriptions})
         else:
             print(form.errors)
     else:

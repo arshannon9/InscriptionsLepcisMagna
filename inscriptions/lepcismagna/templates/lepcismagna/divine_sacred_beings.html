@@ -18,20 +18,22 @@
       <th scope="col">Divine being</th>
       <th scope="col">Epithets</th>
       <th scope="col">External resource</th>
-      <th scope="col">References</th>
+      <th scope="col">Inscriptions</th>
     </tr>
   </thead>
   <tbody class="table-light">
     {% for divine_sacred_being in divine_sacred_beings %}
     <tr>
-      <th scope="row">{{ divine_sacred_being.divine_being }}</th>
+      <th scope="row">
+          {{ divine_sacred_being.divine_being }}
+      </th>
       <td>{{ divine_sacred_being.epithet }}</td>
       <td><a href="{{ divine_sacred_being.external_resource }}">{{ divine_sacred_being.external_resource }}</a></td>
       <td>
-        <ul>
+        <ul id="index-inscription-list">
           {% for inscription in divine_sacred_being.inscriptions.all %}
           <li class="inscription-list-item">
-            <a href="{% url 'inscription_detail' inscription.inscription_id|default:'No reference ID' %}">
+            <a href="{% url 'inscription_detail' inscription.inscription_id|default:'No inscription ID' %}">
               {{ inscription.inscription_id }}
             </a>
           </li>
