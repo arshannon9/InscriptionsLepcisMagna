@@ -3,8 +3,10 @@
 {% block body %}
 <div class="container">
     <div class="row">
-        <div class="col-md-4">
-            <h1>Inscription Search</h1>
+        <div class="col-md-5">
+          <div class="index-header">
+              <h2>Inscription Search</h2>
+          </div>
             <form method="get" action="{% url 'inscription_search' %}" id="inscription-search-form">
                 <div class="form-group">
                     {{ form.search_terms.label_tag }}
@@ -50,8 +52,10 @@
             </form>
         </div>
 
-        <div class="col-md-6">
-            <h1>Results</h1>
+        <div class="col-md-7">
+          <div class="index-header">
+            <h2>Results</h2>
+          </div>
             {% if inscriptions %}
             <ul id="inscriptions-list">
                 {% for inscription in inscriptions %}
@@ -71,7 +75,7 @@
                       <div class="inscription-info">
                         <h3>{{ inscription.title }}</h3>
                         <h4>{{ inscription.inscription_id }}</h4>
-                        <p><strong>Findspot: </strong>{{ inscription.findspot_desc }}</p>
+                        <p><strong>Description: </strong>{{ inscription.description }}</p>
                       </div>
                     </div>
                   </a>

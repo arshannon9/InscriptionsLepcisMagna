@@ -16,6 +16,7 @@
   </thead>
   <tbody class="table-light">
     {% for findspot in findspots %}
+    {% if findspot.inscriptions.all %}
     <tr>
       <th scope="row">{{ findspot.findspots_upper }}</th>
       <td>{{ findspot.findspots_intermediate }}</td>
@@ -33,6 +34,7 @@
         </ul>
       </td>
     </tr>
+    {% endif %}
     {% endfor %}
   </tbody>
 </table>

@@ -14,8 +14,9 @@
   </thead>
   <tbody class="table-light">
     {% for word in words %}
+    {% if word.inscriptions.all %}
     <tr>
-      <th scope="row">{{ word.lemma }}</th>
+      <th scope="row">{{ word.lemma }} ({{ word.inscriptions.all|length }})</th>
       <td>{{ word.language_code }}</td>
       <td>
         <ul id="index-inscription-list">
@@ -29,6 +30,7 @@
         </ul>
       </td>
     </tr>
+    {% endif %}
     {% endfor %}
   </tbody>
 </table>

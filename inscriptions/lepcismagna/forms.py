@@ -6,7 +6,7 @@ from lepcismagna.models import Inscription, Findspot, Repository, Material, Tech
 class InscriptionEntryForm(forms.ModelForm):
     class Meta:
         model = Inscription
-        fields = ['inscription_id', 'title', 'description', 'text', 'letters', 'date', 'findspot_desc', 'original_location', 'last_recorded_location', 'transcription_interpretive', 'transcription_diplomatic', 'transcription_appcrit', 'translation_english', 'commentary', 'bibliography_text']
+        fields = ['inscription_id', 'title', 'description', 'text', 'letters', 'date', 'findspot_description', 'original_location', 'last_recorded_location', 'transcription_interpretive', 'transcription_diplomatic', 'transcription_appcrit', 'translation_english', 'commentary', 'bibliography_text']
 
 class InscriptionSearchForm(forms.Form):
     search_terms = forms.CharField(label='Search Terms', required=False)

@@ -25,6 +25,7 @@
   </thead>
   <tbody class="table-light">
     {% for emperor_imperial_family in emperors_imperial_family %}
+    {% if emperor_imperial_family.inscriptions.all %}
     <tr>
       <th scope="row">{{ emperor_imperial_family.person }}</th>
       <td>{{ emperor_imperial_family.regnal_name }}</td>
@@ -44,6 +45,7 @@
         </ul>
       </td>
     </tr>
+    {% endif %}
     {% endfor %}
   </tbody>
 </table>

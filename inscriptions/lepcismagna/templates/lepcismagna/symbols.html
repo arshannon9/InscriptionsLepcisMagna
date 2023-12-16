@@ -13,6 +13,7 @@
   </thead>
   <tbody class="table-light">
     {% for symbol in symbols %}
+    {% if symbol.inscriptions.all %}
     <tr>
       <th scope="row">{{ symbol.symbol }}</th>
       <td>
@@ -27,6 +28,7 @@
         </ul>
       </td>
     </tr>
+    {% endif %}
     {% endfor %}
   </tbody>
 </table>

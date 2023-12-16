@@ -104,6 +104,7 @@ body {
     flex-direction: row;
     align-items: flex-start;
     margin-bottom: 15px;
+    margin-left: 0;
   }
   
   .form-group label {
@@ -144,6 +145,11 @@ body {
     margin-bottom: 15px;
     width: 100%;
     padding: 10px 10px 0 10px;
+  }
+
+  .inscription-info {
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   
   .inscription-list-item {
@@ -186,11 +192,6 @@ body {
   .tab-content {
     border: 1px solid black;
   }
-
-  /* .tab-content {
-    white-space: pre;
-    tab-size: 4;
-} */
   
   .text-danger {
     color: #d6544d !important;

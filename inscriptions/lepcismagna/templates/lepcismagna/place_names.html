@@ -16,6 +16,7 @@
   </thead>
   <tbody class="table-light">
     {% for place_name in place_names %}
+    {% if place_name.inscriptions.all %}
     <tr>
       <th scope="row">{{ place_name.place_name }}</th>
       <td>{{ place_name.attested_form }}</td>
@@ -33,6 +34,7 @@
         </ul>
       </td>
     </tr>
+    {% endif %}
     {% endfor %}
   </tbody>
 </table>

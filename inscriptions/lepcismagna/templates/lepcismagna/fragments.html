@@ -13,6 +13,7 @@
   </thead>
   <tbody class="table-light">
     {% for fragment in fragments %}
+    {% if fragment.inscriptions.all %}
     <tr>
       <th scope="row">{{ fragment.fragment }}</th>
       <td>
@@ -27,6 +28,7 @@
         </ul>
       </td>
     </tr>
+    {% endif %}
     {% endfor %}
   </tbody>
 </table>

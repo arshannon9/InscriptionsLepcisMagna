@@ -13,11 +13,12 @@
   </thead>
   <tbody class="table-light">
     {% for category in categories %}
+    {% if category.inscriptions.all %}
     <tr>
       <th scope="row">
         <a href="{% url 'category_view' category.name %}" class="category-link"
           >{{ category.name }}</a
-        >
+        > ({{ category.inscriptions.all|length }})
       </th>
       <td>
         <ul id="index-inscription-list">
@@ -31,6 +32,7 @@
         </ul>
       </td>
     </tr>
+    {% endif %}
     {% endfor %}
   </tbody>
 </table>

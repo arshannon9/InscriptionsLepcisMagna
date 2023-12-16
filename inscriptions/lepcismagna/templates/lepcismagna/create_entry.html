@@ -1,17 +1,23 @@
 {% extends "lepcismagna/layout.html" %} {% block body %}
 
-<h2>Create New Entry</h2>
+<div class="index-header">
+  <h2>Create New Entry</h2>
+</div>
 
 <form action="{% url 'create_entry' %}" method="post">
   {% csrf_token %} {% for field in form %}
   <div class="form-group">
-    <label for="{{ field.id_for_label }}">{{ field.label_tag }}</label>
+    {% if field.label_tag == '<label for="id_findspot_desc">Findspot desc:</label>' %}
+      <label for="{{ field.id_for_label }}">Findspot Description:</label>
+    {% else %}
+      <label for="{{ field.id_for_label }}">{{ field.label_tag|title }}</label>
+    {% endif %}
     {{ field }} {% if field.help_text %}
     <p>{{ field.help_text }}</p>
     {% endif %}
   </div>
   {% endfor %}
-  <input class="btn btn-primary" type="submit" value="Create Listing" />
+  <input class="btn btn-success" type="submit" value="Create Listing" />
 </form>
 
 {% endblock %}

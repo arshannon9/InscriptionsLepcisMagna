@@ -13,6 +13,7 @@
   </thead>
   <tbody class="table-light">
     {% for erasure in erasures %}
+    {% if erasure.inscriptions.all %}
     <tr>
       <th scope="row">{{ erasure.erased_text }}</th>
       <td>
@@ -27,6 +28,7 @@
         </ul>
       </td>
     </tr>
+    {% endif %}
     {% endfor %}
   </tbody>
 </table>

@@ -15,6 +15,7 @@
   </thead>
   <tbody class="table-light">
     {% for organization in organizations %}
+    {% if organization.inscriptions.all %}
     <tr>
       <th scope="row">{{ organization.name }}</th>
       <td>{{ organization.epithets }}</td>
@@ -31,6 +32,7 @@
         </ul>
       </td>
     </tr>
+    {% endif %}
     {% endfor %}
   </tbody>
 </table>

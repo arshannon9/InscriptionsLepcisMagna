@@ -13,6 +13,7 @@
   </thead>
   <tbody class="table-light">
     {% for age_at_death in ages_at_death %}
+    {% if age_at_death.inscriptions.all %}
     <tr>
       <th scope="row">{{ age_at_death.age }}</th>
       <td>
@@ -27,6 +28,7 @@
         </ul>
       </td>
     </tr>
+    {% endif %}
     {% endfor %}
   </tbody>
 </table>

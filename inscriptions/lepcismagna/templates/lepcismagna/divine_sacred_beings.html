@@ -16,6 +16,7 @@
   </thead>
   <tbody class="table-light">
     {% for divine_sacred_being in divine_sacred_beings %}
+    {% if divine_sacred_being.inscriptions.all %}
     <tr>
       <th scope="row">
           {{ divine_sacred_being.divine_being }}
@@ -34,6 +35,7 @@
         </ul>
       </td>
     </tr>
+    {% endif %}
     {% endfor %}
   </tbody>
 </table>

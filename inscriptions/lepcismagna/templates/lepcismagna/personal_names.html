@@ -13,6 +13,7 @@
   </thead>
   <tbody class="table-light">
     {% for personal_name in personal_names %}
+    {% if personal_name.inscriptions.all %}
     <tr>
       <th scope="row">{{ personal_name.name }}</th>
       <td>
@@ -29,6 +30,7 @@
         </ul>
       </td>
     </tr>
+    {% endif %}
     {% endfor %}
   </tbody>
 </table>
