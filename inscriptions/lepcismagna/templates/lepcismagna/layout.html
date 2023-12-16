@@ -65,6 +65,7 @@
           id="main-nav"
         >
           <ul class="navbar-nav">
+            {% if user.is_authenticated %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'inscriptions' %}">
                 Inscriptions
@@ -183,7 +184,7 @@
                 </ul>
               </div>
             </li>
-            {% if user.is_authenticated %}
+            
             <li class="nav-item">
               <a class="nav-link" href="{% url 'logout' %}"> Logout </a>
             </li>
