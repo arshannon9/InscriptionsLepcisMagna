@@ -17,14 +17,12 @@
     {% if person.inscriptions.all %}
     <tr>
       <th scope="row">{{ person.person }}</th>
-      <td>{{ person.external_resource }}</td>
+      <td><a href="{{ person.external_resource }}">{{ person.external_resource }}</a></td>
       <td>
         <ul id="index-inscription-list">
           {% for inscription in person.inscriptions.all %}
           <li class="inscription-list-item">
-            <a
-              href="{% url 'inscription_detail' inscription.inscription_id|default:'No inscription ID' %}"
-            >
+            <a href="{% url 'inscription_detail' inscription.inscription_id|default:'No inscription ID' %}">
               {{ inscription.inscription_id }}
             </a>
           </li>

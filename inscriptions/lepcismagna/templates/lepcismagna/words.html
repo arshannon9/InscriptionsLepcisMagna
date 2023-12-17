@@ -22,7 +22,7 @@
         <ul id="index-inscription-list">
           {% for inscription in word.inscriptions.all %}
           <li class="inscription-list-item">
-            <a href="{% url 'inscription_detail' inscription_reference.reference_id|default:'No reference ID' %}">
+            <a href="{% url 'inscription_detail' inscription.inscription_id|default:'No inscription ID' %}">
               {{ inscription.inscription_id }}
             </a>
           </li>

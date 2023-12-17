@@ -34,27 +34,29 @@
     </tr>
     {% endif %}
     {% endfor %}
+
+    {% for epigraphic_reference in epigraphic_references %}
+    {% if epigraphic_reference.inscriptions.all %}
+    <tr>
+      <th scope="row">{{ epigraphic_reference.short_title }}</th>
+      <td>{{ epigraphic_reference.entry|safe }}</td>
+      <td>
+        <ul id="index-inscription-list">
+          {% for inscription in epigraphic_reference.inscriptions.all %}
+          <li class="inscription-list-item">
+            <a
+              href="{% url 'inscription_detail' inscription.inscription_id|default:'No inscription ID' %}"
+            >
+              {{ inscription.inscription_id }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    {% endif %}
+    {% endfor %}
   </tbody>
 </table>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    // Get the table rows and convert them to an array
-    var rows = Array.from(document.querySelectorAll('tbody tr'));
-
-    // Sort the array based on the content of the first column
-    rows.sort(function (a, b) {
-      var keyA = a.querySelector('th').innerText.toUpperCase();
-      var keyB = b.querySelector('th').innerText.toUpperCase();
-      return keyA.localeCompare(keyB);
-    });
-
-    // Remove existing rows and append the sorted rows
-    var tbody = document.querySelector('tbody');
-    rows.forEach(function (row) {
-      tbody.appendChild(row);
-    });
-  });
-</script>
 
 {% endblock %}

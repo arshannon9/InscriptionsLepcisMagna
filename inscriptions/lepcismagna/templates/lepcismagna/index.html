@@ -1,7 +1,11 @@
 {% extends "lepcismagna/layout.html" %} {% block body %}
 
 <div class="index-header">
-  <h2>Welcome, {{ request.user.username }}!</h2>
+  {% if user.is_authenticated %}
+    <h2>Welcome, {{ request.user.username }}!</h2>
+  {% else %}
+    <h2>Welcome! For full access, please <a href="{% url 'login' %}">Login</a> or <a href="{% url 'register' %}">Register</a>.</h2>
+  {% endif %}
 </div>
 <figure> 
   <img src="static/lepcismagna/LMTheatreDedication.jpeg" alt="dedication of Lepcis Magna theatre to Augustus" />
@@ -28,7 +32,7 @@
   <li>
     <strong><a href="{% url 'bibliography' %}">BIBLIOGRAPHY</a></strong> - Browse list of bibliography entries and their associated inscriptions.
   </li>
-
+  {% if user.is_authenticated %}
   <li>
     <strong><a href="{% url 'create_entry' %}">CREATE ENTRY</a></strong> - Submit a new epigraphic entry to be validated by the Admins.
   </li>
@@ -36,7 +40,15 @@
   <li>
     <strong><a href="{% url 'dossier' %}">DOSSIER</a></strong> - Browse the list of inscriptions you have added to your personal epigraphic dossier.
   </li>
+  {% else %}
+  <li>
+    <strong>CREATE ENTRY</strong> - Submit a new epigraphic entry to be validated by the Admins. (Registered users only.)
+  </li>
 
+  <li>
+    <strong>DOSSIER</strong> - Browse the list of inscriptions you have added to your personal epigraphic dossier. (Registered users only.)
+  </li>
+  {% endif %}
   <li>
     <strong>INDICES</strong> of epigraphic data:
     <ul>

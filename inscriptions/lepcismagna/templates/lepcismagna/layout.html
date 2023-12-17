@@ -34,6 +34,9 @@
     {% load static %}
     <link href="{% static 'lepcismagna/styles.css' %}" rel="stylesheet" />
 
+    <!-- Table sorting script -->
+    <script src="{% static 'lepcismagna/tableSort.js' %}"></script>
+
     <title>Inscriptions of Lepcis Magna</title>
   </head>
 
@@ -65,7 +68,6 @@
           id="main-nav"
         >
           <ul class="navbar-nav">
-            {% if user.is_authenticated %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'inscriptions' %}">
                 Inscriptions
@@ -184,7 +186,7 @@
                 </ul>
               </div>
             </li>
-            
+            {% if user.is_authenticated %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'logout' %}"> Logout </a>
             </li>
@@ -202,7 +204,7 @@
       </div>
     </nav>
 
-    <main class="main-container container-md mt-5 bg-light">
+    <main class="main-container container-md mt-2 bg-light">
       {% block body %} {% endblock %}
     </main>
 

@@ -1,25 +1,23 @@
+import re
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.db.models import Q
-from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
-from django.shortcuts import get_object_or_404, render, redirect
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.core.paginator import Paginator
 from django.urls import reverse
 
-from .models import UserDossier, Inscription, Bibliography, EpigraphicReference, Category, Image, Abbreviation, AgeAtDeath, DivineSacredBeing, EmperorImperialFamily, Erasure, Findspot, Fragment, Organization, Person, PersonalName, PlaceName, Symbol, Word
+from .models import UserDossier, Inscription, Bibliography, EpigraphicReference, Category, Abbreviation, AgeAtDeath, DivineSacredBeing, EmperorImperialFamily, Erasure, Findspot, Fragment, Organization, Person, PersonalName, PlaceName, Symbol, Word
 from .forms import InscriptionEntryForm, InscriptionSearchForm
 
 
 def index(request):
-    if request.user.is_authenticated:
-        # If user is logged in, redirect to profile page
-        return render(request, "lepcismagna/index.html")
-    else:
-        return HttpResponseRedirect(reverse('login'))
+    return render(request, "lepcismagna/index.html")
     
 # User account handling
-
 def login_view(request):
     if request.method == 'POST':
         # Attempt to sign user in
@@ -69,15 +67,7 @@ def register(request):
     else:
         return render(request, "lepcismagna/register.html")
     
-# Logged-in user handling
-
-@login_required
-def profile(request, username):
-    # Display user's profile page
-    if request.method == 'POST':
-        user = get_object_or_404(User, username=username)
-    return render(request, 'lepcismagna/profile.html', {'user': user})
-    
+# Logged-in user functionality handling
 @login_required
 def create_entry(request):
     # Handle the creation of a new inscription entry
@@ -87,7 +77,7 @@ def create_entry(request):
             new_entry = form.save(commit=False)
             new_entry.entry_creator = request.user
             new_entry.save()
-            return render(request, "lepcismagna/inscriptions.html", {"inscriptions": inscriptions})
+            return HttpResponseRedirect(reverse("inscriptions"))
         else:
             print(form.errors)
     else:
@@ -99,7 +89,15 @@ def dossier(request):
     # Retrieve the user's dossier and display on the dossier page
     user_dossier, created = UserDossier.objects.get_or_create(user=request.user)
     dossier_inscriptions = user_dossier.dossier.all()
-    return render(request, "lepcismagna/dossier.html", {"dossier_inscriptions": dossier_inscriptions})
+
+    paginator = Paginator(dossier_inscriptions, 10)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, "lepcismagna/dossier.html", {
+        "page_obj": page_obj,
+    })
 
 @login_required
 def toggle_dossier(request, inscription_id):
@@ -118,27 +116,59 @@ def toggle_dossier(request, inscription_id):
     # If the request is not a POST request, redirect to the inscription detail page
     return HttpResponseRedirect(reverse('inscription_detail', args=[inscription_id]))
 
-# Inscription information handling
-
+# Inscription handling
 def inscriptions(request):
-    # Retrieve inscription entries and display them
+    # Retrieve inscription entries, display and paginate them (10 inscriptions per page)
     inscriptions = Inscription.objects.all()
-    return render(request, "lepcismagna/inscriptions.html", {"inscriptions": inscriptions})
+    paginator = Paginator(inscriptions, 10)
 
-@login_required
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, "lepcismagna/inscriptions.html", {
+        "page_obj": page_obj,
+    })
+
 def inscription_detail_view(request, inscription_id):
     # Display the details of an inscription
     inscription = get_object_or_404(Inscription, inscription_id=inscription_id)
 
-    # Check if the inscription is in the user's dossier
-    user_dossier, created = UserDossier.objects.get_or_create(user=request.user)
-    is_in_dossier = inscription in user_dossier.dossier.all()
+    # Check if the user is authenticated
+    if request.user and request.user.is_authenticated:
+        # Ensure that we have a concrete user object
+        user = request.user
+
+        # Check if the inscription is in the user's dossier
+        user_dossier, created = UserDossier.objects.get_or_create(user=user)
+        is_in_dossier = inscription in user_dossier.dossier.all()
+
+    else:
+        # If user is not authenticated, set user_dossier and is_in_dossier to None
+        user_dossier = None
+        is_in_dossier = None
+
+    # Get the previous and next inscription IDs
+    all_inscriptions = Inscription.objects.all().order_by('inscription_id')
+    all_inscriptions_list = list(all_inscriptions)  # Convert to list
+    current_index = all_inscriptions_list.index(inscription)
+
+    previous_id = None
+    next_id = None
+
+    if current_index > 0:
+        previous_id = all_inscriptions_list[current_index - 1].inscription_id
+
+    if current_index < len(all_inscriptions_list) - 1:
+        next_id = all_inscriptions_list[current_index + 1].inscription_id
 
     return render(request, 'lepcismagna/inscription_detail.html', {
         'inscription': inscription,
         'is_in_dossier': is_in_dossier,
+        'previous_id': previous_id,
+        'next_id': next_id,
     })
 
+# Category handling
 def categories(request):
     # Retrieve all categories and display on categories page
     categories = Category.objects.all()
@@ -151,16 +181,25 @@ def category_view(request, category_name):
     # Filter inscriptions based on the selected category and display on category page
     category_inscriptions = Inscription.objects.filter(
         category=category)
+    
+    paginator = Paginator(category_inscriptions, 10)
 
-    context = {
-        'category_inscriptions': category_inscriptions,
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, "lepcismagna/category_view.html", {
+        "page_obj": page_obj,
         'category_name': category_name,
-    }
-    return render(request, "lepcismagna/category_view.html", context)
+    })  
 
+# Bibliography handling
 def bibliography(request):
     bibliography_entries = Bibliography.objects.all()
-    return render(request, "lepcismagna/bibliography.html", {"bibliography_entries": bibliography_entries})
+    epigraphic_references = EpigraphicReference.objects.all()
+    return render(request, "lepcismagna/bibliography.html", {
+        "bibliography_entries": bibliography_entries,
+        "epigraphic_references": epigraphic_references,
+        })
 
 # Search handling
 def inscription_search(request):
@@ -179,6 +218,8 @@ def inscription_search(request):
 
         # Filter query based on provided search terms
         if search_terms:
+            # Remove <br> from the search terms
+            search_terms = re.sub(r'<br\s*/*>', '', search_terms, flags=re.IGNORECASE)
             inscriptions = inscriptions.filter(
                 Q(title__icontains=search_terms) |
                 Q(transcription_interpretive__icontains=search_terms) | 
@@ -209,7 +250,6 @@ def inscription_search(request):
     return render(request, "lepcismagna/inscription_search.html", {'form': form, 'inscriptions': inscriptions})
 
 # Epigraphic indices handling
-
 def abbreviations(request):
     abbreviations = Abbreviation.objects.prefetch_related('inscriptions')
     return render(request, "lepcismagna/abbreviations.html", {"abbreviations": abbreviations})

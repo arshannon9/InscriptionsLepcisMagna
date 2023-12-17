@@ -4,7 +4,8 @@
     <h2>{{ user.username }}'s Dossier</h2>
   </div>
   <ul id="inscriptions-list">
-    {% for inscription in dossier_inscriptions %}
+    {% for inscription in page_obj %}
+    {% if inscription.is_validated %}
     <li>
       <a
         href="{% url 'inscription_detail' inscription.inscription_id %}"
@@ -12,13 +13,19 @@
       >
         <div class="container">
           {% if inscription.images.all %}
-          <img
-            class="inscription-thumbnail"
-            src="{{ inscription.images.all.0.image_url }}"
-            alt="{{ inscription.title }}"
-          />
+            <img
+              class="inscription-thumbnail"
+              src="{{ inscription.images.all.0.image_url }}"
+              alt="{{ inscription.title }}"
+            />
+          {% else %}
+            <img 
+              class="inscription-thumbnail"
+              src="static/lepcismagna/no-photos.png"
+              alt="no photos available"
+            />
           {% endif %}
-          <div class="inscription-info">
+          <div class="inscription-info col-md-9">
             <h3>{{ inscription.title }}</h3>
             <h4>{{ inscription.inscription_id }}</h4>
             <p><strong>Description: </strong>{{ inscription.description }}</p>
@@ -26,7 +33,45 @@
         </div>
       </a>
     </li>
+    {% endif %}
     {% endfor %}
   </ul>
 </div>
+
+<!-- Page navigation -->
+<br>
+<nav aria-label="Page">
+   <ul class="pagination justify-content-center">
+      {% if page_obj.has_previous %}
+      <li class="page-item">
+         <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+      </li>
+      {% else %}
+      <li class="page-item disabled">
+         <a class="page-link" href="#" tabindex="-1" aria-disabled="True">Previous</a>
+      </li>
+      {% endif %}
+      {% for i in page_obj.paginator.page_range %}
+      {% if page_obj.number == i %}
+      <li class="page-item active" aria-current="page">
+         <span class="page-link">
+            {{ i }}
+            <span class="sr-only"></span>
+         </span>
+      </li>
+      {% else %}
+      <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+      <li class="page-item">
+         <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+      </li>
+      {% else %}
+      <li class="page-item disabled">
+         <a class="page-link" href="#" tabindex="-1" aria-disabled="True">Next</a>
+      </li>
+      {% endif %}
+   </ul>
+</nav>
 {% endblock %}

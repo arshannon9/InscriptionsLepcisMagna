@@ -24,7 +24,7 @@ class Inscription(models.Model):
     techniques = models.ManyToManyField('Technique', blank=True, related_name='techniques')
     letters = models.TextField(blank=True)
     languages = models.ManyToManyField('Language', blank=True, related_name='languages')
-    date = models.CharField(max_length=50)
+    date = models.CharField(max_length=100)
     findspot_description = models.TextField(blank=True)
     associated_inscriptions = models.ManyToManyField('self', blank=True)
     original_location = models.CharField(max_length=255)

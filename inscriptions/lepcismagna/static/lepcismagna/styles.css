@@ -2,57 +2,57 @@ body {
     font-family: "EB Garamond", serif;
     font-style: normal;
     font-variant: normal;
-  }
+}
   
-  footer {
+footer {
     color: #d6544d;
     display: flex;
     flex-direction: row;
     justify-content: center;
   }
   
-  form {
+form {
     color: #d6544d;
     font-size: 16px;
     font-weight: 400;
     line-height: 22px;
     text-align: justify;
-  }
+}
   
-  h1 {
+h1 {
     font-size: 34px;
     font-weight: 700;
     line-height: 36px;
     align-content: center;
-  }
+}
   
-  h2 {
+h2 {
     color: #d6544d;
     font-size: 32px;
     font-weight: 700;
     line-height: 35px;
     padding: 10px;
-  }
+}
 
-  h3 {
+h3 {
     font-size: 28px;
     font-weight: 700;
     line-height: 35px;
-  }
+}
 
-  hr {
+hr {
     margin: 0;
-  }
+}
   
-  img {
+img {
     max-width: 100%;
-  }
+}
   
-  li:not(last-child) {
+li:not(last-child) {
     margin-bottom: 5px;
-  }
+}
   
-  li .container {
+li .container {
     display: flex;
     width: 100%;
     height: 190px;
@@ -60,183 +60,193 @@ body {
     border: 1px solid black;
     padding: 10px;
     margin: 10px;
-  }
+}
   
-  li .container:hover {
+li .container:hover {
     box-shadow: 10px 10px 5px grey;
     cursor: pointer;
-  }
+}
   
-  main {
+main {
     background-color: palegoldenrod;
-  }
+}
   
-  p {
+p {
     font-size: 16px;
     font-weight: 400;
     line-height: 22px;
     text-align: justify;
-  }
+}
   
-  .accordion-item img {
+.accordion-item img {
     max-width: 100%;
     height: auto;
     float: left;
-  }
+}
   
-  .accordion-button {
+.accordion-button {
     --bs-accordion-active-color: black;
     background-color: #d6544d !important;
-  }
+}
   
-  .bi {
+.bi {
     margin-right: 15px;
     font-size: 32px;
-  }
+}
   
-  .btn-danger {
+.btn-danger {
     --bs-btn-bg: #d6544d;
     --bs-btn-color: #000;
-  }
+}
   
-  .card-img-top {
+.card-img-top {
     width: 100%;
     height: 30vw;
     object-fit: cover;
-  }
+}
   
-  .display-2 {
+.display-2 {
     color: #d6544d;
-  }
+}
   
-  .form-group {
+.form-group {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
     margin-bottom: 15px;
     margin-left: 0;
-  }
+}
   
-  .form-group label {
+.form-group label {
     width: 150px;
     text-align: end;
     margin-right: 20px;
-  }
+}
   
-  .gallery {
+.gallery {
     background-color: #d6544d;
     padding: 80px 0;
-  }
+}
   
-  .gallery img {
+.gallery img {
     background-color: #fff;
     padding: 15px;
     width: 100%;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
     cursor: pointer;
-  }
+}
   
-  .index-header {
+.index-header {
     padding: 10px;
-  }
+}
   
-  .index-header-list {
+.index-header-list {
     list-style: none;
-  }
+}
   
-  .inscr-div {
-    margin-bottom: 15px;
-  }
+.inscr-div {
+    margin: 0 10px 15px 10px;
+    
+}
   
-  .inscription-header {
+.inscription-header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 15px;
     width: 100%;
     padding: 10px 10px 0 10px;
-  }
+}
 
-  .inscription-info {
+.inscription-info {
     overflow: hidden;
     text-overflow: ellipsis;
-  }
+}
   
-  .inscription-list-item {
+.inscription-list-item {
     display: inline-block;
     margin-right: 10px;
-  }
+}
   
-  .inscription-link,
-  .inscription-link:hover {
+.inscription-link,
+.inscription-link:hover {
     color: black;
     text-decoration: none;
-  }
+}
   
-  .inscription-thumbnail {
-    display: block;
+.inscription-thumbnail {
+    display: flex;
     max-width: 200px;
     width: auto;
     height: auto;
     margin-right: 10px;
-  }
+}
   
-  .main-container {
-    padding-bottom: 20px;
-  }
+.main-container {
+  padding-bottom: 20px;
+}
   
-  .navbar {
+.navbar {
     color: #d6544d;
     --bs-navbar-brand-font-size: 32px;
-  }
+}
   
-  .navbar-brand {
+.navbar-brand {
     display: flex;
     flex-direction: row;
-  }
+}
   
-  .navbar-toggler {
+.navbar-toggler {
     color: #d6544d;
-  }
-  
-  .tab-content {
-    border: 1px solid black;
-  }
+}
 
-  .table {
+.navigation-links {
+  text-align: end;
+  margin-bottom: 15px;
+}
+  
+.tab-content {
+    border: 1px solid black;
+}
+
+.table {
     margin-left: 15px;
     width: 97.5%;
-  }
+}
   
-  .text-danger {
+.text-danger {
     color: #d6544d !important;
-  }
+}
   
-  #inscriptions-list,
-  #index-inscription-list,
-  #category-items,
-  #dossier-list {
+#add-to-dossier-btn {
+  margin: -5px 10px 10px 10px;
+}
+
+#inscriptions-list,
+#index-inscription-list,
+#category-items,
+#dossier-list {
     list-style: none;
     padding-left: 0;
     margin: 0;
-  }
+}
 
-  #inscription-search-form {
+#inscription-search-form {
     text-align: start;
-  }
+}
   
-  #login-form,
-  #register-form {
+#login-form,
+#register-form {
     width: 25%;
-  }
+}
 
-  #quick-start-guide {
+#quick-start-guide {
     margin-left: 20px;
-  }
+}
   
-  #transcriptions-content {
+#transcriptions-content {
     padding: 10px;
     word-wrap: break-word;
     margin-bottom: 10px;
-  }
+}
   

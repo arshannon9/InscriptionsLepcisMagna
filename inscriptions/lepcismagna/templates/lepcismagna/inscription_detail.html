@@ -3,19 +3,35 @@
 <div class="inscription-header">
   <h1>{{ inscription.inscription_id }} - {{ inscription.title }}</h1>
 
-  {% if user.is_authenticated %}
+  <div class="navigation-links text-end">
+    {% if previous_id %}
+      <a href="{% url 'inscription_detail' previous_id %}">&lt; Previous ({{ previous_id }})</a>
+    {% else %}
+      <span class="inactive-link">&lt; Previous</span>
+    {% endif %}
+    
+    <span class="separator"> | </span>
+    
+    {% if next_id %}
+      <a href="{% url 'inscription_detail' next_id %}">Next ({{ next_id }}) &gt;</a>
+    {% else %}
+      <span class="inactive-link">Next &gt;</span>
+    {% endif %}
+  </div>
+</div>
+
+{% if user.is_authenticated %}
   <form
     method="POST"
     action="{% url 'toggle_dossier' inscription_id=inscription.inscription_id %}"
   >
     {% csrf_token %} 
-    <button id="add-to-dossier-btn" class="btn {% if is_in_dossier %}btn-secondary{% else %}btn-success{% endif %}">
+    <button id="add-to-dossier-btn" class="text-end btn {% if is_in_dossier %}btn-secondary{% else %}btn-success{% endif %}">
       {% if is_in_dossier %}Remove from Dossier{% else %}Add to Dossier{% endif %}
   </button>
 
   </form>
   {% endif %}
-</div>
 
 <div class="inscr-div inscription-info">
   <p><strong>Description: </strong>{{ inscription.description }}</p>
@@ -25,7 +41,7 @@
 </div>
 
 <div class="inscr-div inscription-locations">
-  <p><strong>Findspot: </strong>{{ inscription.findspot_desc }}</p>
+  <p><strong>Findspot: </strong>{{ inscription.findspot_description }}</p>
   <p><strong>Original location: </strong>{{ inscription.original_location }}</p>
   <p>
     <strong>Last recorded location: </strong>
@@ -98,7 +114,7 @@
 {% if inscription.commentary %}
 <div class="inscr-div inscription-commentary">
   <p><strong>Commentary</strong></p>
-  <p>{{ inscription.commentary }}</p>
+  <p>{{ inscription.commentary|safe }}</p>
 </div>
 {% endif %}
 

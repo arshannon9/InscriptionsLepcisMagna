@@ -8,7 +8,6 @@ urlpatterns = [
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),
     path("register", views.register, name="register"),
-    path("profile/<str:username>", views.profile, name="profile"),
     path("create_entry", views.create_entry, name="create_entry"),
     path("dossier", views.dossier, name="dossier"),
     path("toggle_dossier/<str:inscription_id>", views.toggle_dossier, name="toggle_dossier"),
