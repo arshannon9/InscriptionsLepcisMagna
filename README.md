@@ -2,16 +2,33 @@
 
 ## A Python-based web application, built using the Django framework, intended for use by scholars and enthusiasts to research the inscriptions of Lepcis Magna via a user-friendly, research-forward platform.
 
-### Demo: [Watch Demo Video] (XXXX)
+### Demo: [Watch Demo Video] (https://youtu.be/ZElO4XofKWs)
 
 **Features:**
 
 - The application can be used to:
 
-    - Register individual users for collaboration
+    - Register individual users for collaborative development of epigraphic database
     - Store epigraphic data provided by admins or registered users in SQL database for recall by users
     - Search for inscriptions by location, content, and other identifying data
     - Compile epigraphic dossiers for registered users to use in research
+
+**Contents:**
+
+- This application directory contains:
+
+    - Folder: migrations - Migrations of database utilizing Django models.
+    - Folder: static/lepcismagna - Static assets, including: 
+        - Welcome/User Home page banner image (LMTheatreDedication.jpeg)
+        - default thumbnail image (no-photos.png)
+        - custom CSS styles (styles.css)
+        - JavaScript used to sort tables used in indices and bibliography and category lists (tableSort.js)
+    - Folder: templates/lepcismagna - Django templates for frontend.
+    - File: admin.py - Registration of Django models accessible via the admin database interface.
+    - File: forms.py - Forms for 'Create Entry' and 'Search' functionalities.
+    - File: models.py - Django models used in database.
+    - File: urls.py - URL paths for views.
+    - File: views.py - Django views containing backend logic for the application.
 
 **How to Run:**
 
@@ -104,7 +121,7 @@
 
 - Django
 
-**Database Schema:**
+**Database Models:**
 
 - The Django models utilized by this application are found in 'lepcismagna/models.py'.
 
